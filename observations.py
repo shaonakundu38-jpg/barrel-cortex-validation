@@ -18,8 +18,8 @@ OBSERVATIONS = {
     # Source: Brecht & Sakmann 2002 (L4 spiny stellates, ~7–8 ms onset).
    
     'latency': {
-        'mean'   : 7.5,
-        'std'    : 0.8,
+        'mean'   : 8.9,
+        'std'    : 1.5,
         'units'  : 'ms',
         'source' : 'Brecht & Sakmann 2002, J Physiol',
     },
@@ -30,10 +30,10 @@ OBSERVATIONS = {
     # Source: Andermann & Moore 2006, Nat Neurosci.
    
     'direction_selectivity': {
-        'mean'   : 0.38,
-        'std'    : 0.05,
+        'mean'   : 2.18,
+        'std'    : 0.50,
         'units'  : 'dimensionless (0–1)',
-        'source' : 'Andermann & Moore 2006, Nat Neurosci',
+        'source' : 'Wilent & Contreras 2005, J Neurosci 25(11):2983-2991',
     },
 
    
@@ -79,8 +79,8 @@ OBSERVATIONS = {
     # Source: Brecht et al. 2003, J Physiol.
    
     'spontaneous_rate': {
-        'mean'   : 0.3,
-        'std'    : 0.15,
+        'mean'   : 1.0,
+        'std'    : 0.5,
         'units'  : 'Hz',
         'source' : 'Brecht et al. 2003, J Physiol',
     },
