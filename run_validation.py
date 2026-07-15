@@ -48,24 +48,17 @@ def _laminar_obs():
  # Helpers
  
 def _verdict(score):
-    """
-    Return a human-readable verdict string for a SciUnit score.
- 
-    ZScore.__float__ succeeds for real scores; NAScore raises TypeError,
-    which is how we detect a missing-spike result.
-    """
     if isinstance(score, NAScore):
         return f'N/A  ({score})'
-    try:
-        z = abs(float(score))
-    except (TypeError, ValueError):
-        return 'N/A  (unscored)'
-    if z < Z_PASS:
-        return f'PASS  (|Z| = {z:.2f})'
-    if z < Z_BORDERLINE:
-        return f'BORDERLINE  (|Z| = {z:.2f})'
-    return f'FAIL  (|Z| = {z:.2f})'
- 
+    if isinstance(score, ZScore):
+        z = abs(float(score.score))
+        if z < Z_PASS:
+            return f'PASS  (|Z| = {z:.2f})'
+        if z < Z_BORDERLINE:
+            return f'BORDERLINE  (|Z| = {z:.2f})'
+        return f'FAIL  (|Z| = {z:.2f})'
+    return 'N/A  (unscored)'
+
  
 def _section(title):
     print('\n' + '=' * 65)
@@ -162,7 +155,7 @@ def run_barrel_validation(model):
     _section('SUMMARY')
     passed = sum(
         1 for s in results.values()
-        if isinstance(s, ZScore) and abs(s.score) < Z_PASS
+        if isinstance(s, ZScore) and abs(float(s.score)) < Z_PASS
     )
     print(f'  Passed : {passed} / {len(results)}  (|Z| < {Z_PASS})')
     print(f'  Plots  : see ./plots/\n')
@@ -171,12 +164,9 @@ def run_barrel_validation(model):
  
  
 if __name__ == '__main__':
-    # --- Good model: should produce mostly PASS scores ---
-    good_model = UnifiedBarrelModel(name='L4_Cortical_Sheet')
-    run_barrel_validation(good_model)
- 
-    # --- Bad model: should produce FAIL on latency tests ---
-    print('\n')
-    bad_model = BadLatencyModel(name='BadLatencyModel')
-    run_barrel_validation(bad_model)
- 
+    from models.kremer_model_wrapper import KremerBarrelModel
+
+    kremer = KremerBarrelModel(barrelarraysize=3)
+    kremer.build()
+    kremer.warmup(duration_s=5)    
+    run_barrel_validation(kremer)
